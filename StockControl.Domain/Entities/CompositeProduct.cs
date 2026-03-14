@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace StockControl.Domain.Entities
 {
-    internal class CompositeProduct
+    public class CompositeProduct : Product
     {
+        public List<ProductComponent> Components { get; set; } = new List<ProductComponent>();
+        public override decimal GetCostPrice()
+        {
+            return Components.Sum(c => c.SimpleProduct.GetCostPrice() * c.Quantity);
+        }
     }
 }

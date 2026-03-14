@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StockControl.Domain\StockControl.Domain.csproj" />
+    <ProjectReference Include="..\StockControl.Infrastructure\StockControl.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

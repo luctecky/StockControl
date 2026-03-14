@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Forms\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StockControl.Application\StockControl.Application.csproj" />
+    <ProjectReference Include="..\StockControl.Domain\StockControl.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

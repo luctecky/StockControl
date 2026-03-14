@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace StockControl.Domain.Entities
 {
-    internal class SimpleProduct
+    public class SimpleProduct : Product
     {
+        public decimal CostPrice { get; set; }
+        public override decimal GetCostPrice()
+        {
+            return CostPrice;
+        }
     }
 }
