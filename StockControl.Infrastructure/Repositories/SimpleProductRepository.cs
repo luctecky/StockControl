@@ -107,7 +107,7 @@ namespace StockControl.Infrastructure.Repositories
             return null;
         }
 
-        public void update(SimpleProduct product)
+        public void Update(SimpleProduct product)
         {
             using (var connection = _db.GetConnection()) 
             {
@@ -131,6 +131,7 @@ namespace StockControl.Infrastructure.Repositories
                 cmdSimple.ExecuteNonQuery();
             }
         }
+
         private SimpleProduct MapProduct(IDataReader reader)
         {
             return new SimpleProduct
