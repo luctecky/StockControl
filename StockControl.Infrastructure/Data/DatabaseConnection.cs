@@ -5,7 +5,7 @@ namespace StockControl.Infrastructure.Data
 {
     public class DatabaseConnection
     {
-        private const string ConnectionString = "Server=.\\SQLEXPRESS;Database=StockControlDB;Integrated Security=True;";
+        private const string ConnectionString = "Server=(localdb)\\MSSQLLocalDB;Database=StockControlDB;Integrated Security=True;TrustServerCertificate=True;";
 
         public IDbConnection GetConnection()
         {
