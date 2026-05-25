@@ -44,7 +44,7 @@ partial class SimpleProductForm
         // lblName
         // 
         lblName.AutoSize = true;
-        lblName.Location = new Point(12, 9);
+        lblName.Location = new Point(12, 14);
         lblName.Name = "lblName";
         lblName.Size = new Size(42, 15);
         lblName.TabIndex = 0;
@@ -53,7 +53,7 @@ partial class SimpleProductForm
         // lblCostPrice
         // 
         lblCostPrice.AutoSize = true;
-        lblCostPrice.Location = new Point(12, 47);
+        lblCostPrice.Location = new Point(12, 43);
         lblCostPrice.Name = "lblCostPrice";
         lblCostPrice.Size = new Size(63, 15);
         lblCostPrice.TabIndex = 1;
@@ -62,7 +62,7 @@ partial class SimpleProductForm
         // lblSalePrice
         // 
         lblSalePrice.AutoSize = true;
-        lblSalePrice.Location = new Point(149, 47);
+        lblSalePrice.Location = new Point(149, 43);
         lblSalePrice.Name = "lblSalePrice";
         lblSalePrice.Size = new Size(60, 15);
         lblSalePrice.TabIndex = 2;
@@ -70,28 +70,28 @@ partial class SimpleProductForm
         // 
         // txtName
         // 
-        txtName.Location = new Point(60, 6);
+        txtName.Location = new Point(72, 6);
         txtName.Name = "txtName";
-        txtName.Size = new Size(217, 23);
+        txtName.Size = new Size(198, 23);
         txtName.TabIndex = 3;
         // 
         // txtCostPrice
         // 
-        txtCostPrice.Location = new Point(72, 44);
+        txtCostPrice.Location = new Point(72, 35);
         txtCostPrice.Name = "txtCostPrice";
         txtCostPrice.Size = new Size(71, 23);
         txtCostPrice.TabIndex = 4;
         // 
         // txtSalePrice
         // 
-        txtSalePrice.Location = new Point(206, 44);
+        txtSalePrice.Location = new Point(206, 35);
         txtSalePrice.Name = "txtSalePrice";
-        txtSalePrice.Size = new Size(71, 23);
+        txtSalePrice.Size = new Size(64, 23);
         txtSalePrice.TabIndex = 5;
         // 
         // btnSave
         // 
-        btnSave.Location = new Point(206, 114);
+        btnSave.Location = new Point(195, 114);
         btnSave.Name = "btnSave";
         btnSave.Size = new Size(75, 23);
         btnSave.TabIndex = 6;
@@ -111,7 +111,7 @@ partial class SimpleProductForm
         // 
         // btnClear
         // 
-        btnClear.Location = new Point(104, 73);
+        btnClear.Location = new Point(101, 78);
         btnClear.Name = "btnClear";
         btnClear.Size = new Size(75, 23);
         btnClear.TabIndex = 8;
