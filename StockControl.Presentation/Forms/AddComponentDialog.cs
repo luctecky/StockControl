@@ -15,6 +15,9 @@ namespace StockControl.Presentation.Forms
         public AddComponentDialog(SimpleProductService simpleProductService)
         {
             InitializeComponent();
+
+            StartPosition = FormStartPosition.CenterParent;
+
             _simpleProductService = simpleProductService;
         }
 

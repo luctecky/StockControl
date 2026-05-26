@@ -20,6 +20,8 @@ namespace StockControl.Presentation.Forms
         {
             InitializeComponent();
 
+            StartPosition = FormStartPosition.CenterScreen;
+
             var compositeRepo = new CompositeProductRepository();
             var simpleRepo = new SimpleProductRepository();
 

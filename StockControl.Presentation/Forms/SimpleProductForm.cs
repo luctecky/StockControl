@@ -12,6 +12,8 @@ public partial class SimpleProductForm : Form
     {
         InitializeComponent();
 
+        StartPosition = FormStartPosition.CenterScreen;
+
         var repository = new SimpleProductRepository();
         _services = new SimpleProductService(repository);
     }
