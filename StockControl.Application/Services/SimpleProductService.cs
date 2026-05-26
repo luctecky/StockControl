@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace StockControl.Application.Services
 {
-    public class SimpleProductServices
+    public class SimpleProductService
     {
         private readonly ISimpleProductRepository _repository;
 
-        public SimpleProductServices(ISimpleProductRepository repository)
+        public SimpleProductService(ISimpleProductRepository repository)
         {
             _repository = repository;
         }

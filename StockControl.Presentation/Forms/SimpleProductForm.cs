@@ -6,14 +6,14 @@ namespace StockControl.Presentation.Forms;
 
 public partial class SimpleProductForm : Form
 {
-    private readonly SimpleProductServices _services;
+    private readonly SimpleProductService _services;
     private int _selectedProductId = 0;
     public SimpleProductForm()
     {
         InitializeComponent();
 
         var repository = new SimpleProductRepository();
-        _services = new SimpleProductServices(repository);
+        _services = new SimpleProductService(repository);
     }
 
     private void SimpleProductForm_Load(object sender, EventArgs e)
