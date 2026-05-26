@@ -60,24 +60,25 @@ namespace StockControl.Infrastructure.Repositories
             cmd.ExecuteNonQuery();
         }
 
-        public void Delete(int id)
+        public void Delete(int compositeProductId)
         {
             using (var connection = _db.GetConnection())
             {
+
                 //Delete components first (Foreign key)
                 var cmdComponents = new SqlCommand(@"
-                    'DELETE FROM ProductComponents
-                     WHERE CompositeProductId = @Id", (SqlConnection)connection);
+                    DELETE FROM ProductComponents
+                     WHERE CompositeProductId = @CompositeProductId", (SqlConnection)connection);
 
-                cmdComponents.Parameters.AddWithValue("@Id", id);
+                cmdComponents.Parameters.AddWithValue("@CompositeProductId", compositeProductId);
                 cmdComponents.ExecuteNonQuery();
 
                 //Then delete the product
                 var cmdProduct = new SqlCommand(@"
-                    DELETE FROM Products WHERE Id = @Id",
+                    DELETE FROM Products WHERE Id = @ProductId",
                     (SqlConnection)connection);
 
-                cmdProduct.Parameters.AddWithValue("@Id", id);
+                cmdProduct.Parameters.AddWithValue("@ProductId", compositeProductId);
                 cmdProduct.ExecuteNonQuery();
             }
         }
