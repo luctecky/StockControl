@@ -22,9 +22,7 @@ namespace StockControl.Presentation.Forms
 
         private void mnuManage_Click(object sender, EventArgs e)
         {
-            // Coming in Phase 7
-            MessageBox.Show("Requisitions — Coming soon!",
-                "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            OpenForm(new RequisitionForm());
         }
 
         private void mnuReqReport_Click(object sender, EventArgs e)
