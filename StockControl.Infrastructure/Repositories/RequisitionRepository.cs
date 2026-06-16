@@ -4,7 +4,7 @@ using StockControl.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,6 +100,7 @@ namespace StockControl.Infrastructure.Repositories
                         var requisition = MapRequisition(reader);
                         reader.Close();
                         requisition.Items = GetItems(connection, id);
+                        return requisition;
                     }
                 }
             }
@@ -112,7 +113,7 @@ namespace StockControl.Infrastructure.Repositories
             using (var connection = _db.GetConnection())
             {
                var cmd = new SqlCommand(@"
-                   SELECT Id, WithdrawalDate, ResponsibleEmplyee
+                   SELECT Id, WithdrawalDate, ResponsibleEmployee
                    FROM Requisitions
                    ORDER BY WithdrawalDate DESC",
                    (SqlConnection)connection);
@@ -191,23 +192,33 @@ namespace StockControl.Infrastructure.Repositories
             {
                 while (reader.Read())
                 {
-                   var type = reader["ProductType"].ToString();
+                    var type = reader["ProductType"].ToString();
 
-                    // Map to appropriate product type
                     Product product = type == "S"
                         ? MapSimpleProduct(reader)
                         : MapCompositeProduct(reader);
 
-                    items.Add(new RequisitionItem
+                    var item = new RequisitionItem
                     {
-                        Id              = (int)reader["Id"],
-                        RequisitionId   = (int)reader["RequisitionId"],
-                        Quantity        = (int)reader["Quantity"],
-                        Product         = product,
-                    });
+                        Id = (int)reader["Id"],
+                        RequisitionId = (int)reader["RequisitionId"],
+                        Quantity = (int)reader["Quantity"],
+                        Product = product
+                    };
+
+                    items.Add(item);
                 }
+
+                // Load composite components AFTER closing the reader
+                // (cannot have two open readers on the same connection)
+                foreach (var item in items)
+                {
+                    if (item.Product is CompositeProduct composite)
+                        composite.Components = GetCompositeComponents(connection, composite.Id);
+                }
+
+                return items;
             }
-            return items;
         }
 
         private Product MapCompositeProduct(SqlDataReader reader)
@@ -250,7 +261,7 @@ namespace StockControl.Infrastructure.Repositories
                     UPDATE Requisitions
                     SET WithdrawalDate = @WithdrawalDate,
                         ResponsibleEmployee = @ResponsibleEmployee
-                    WHERE Id = @Id;", (SqlConnection)_db.GetConnection());
+                    WHERE Id = @Id;", (SqlConnection)connection);
 
                 cmd.Parameters.AddWithValue("@Id", requisition.Id);
                 cmd.Parameters.AddWithValue("@WithdrawalDate", requisition.WithdrawalDate);
@@ -260,7 +271,7 @@ namespace StockControl.Infrastructure.Repositories
                 // Step 2: For simplicity, delete all existing items and re-insert
                 var deleteCmd = new SqlCommand("" +
                     "DELETE FROM RequisitionItems WHERE RequisitionId = @Ìd;",
-                    (SqlConnection)_db.GetConnection());
+                    (SqlConnection)connection);
 
                 cmd.Parameters.AddWithValue("@Id", requisition.Id);
                 deleteCmd.ExecuteNonQuery();
@@ -270,6 +281,48 @@ namespace StockControl.Infrastructure.Repositories
                     InsertItem(connection, requisition.Id, item);
                 }
             }
+        }
+
+        private List<ProductComponent> GetCompositeComponents(
+    IDbConnection connection, int compositeProductId)
+        {
+            var components = new List<ProductComponent>();
+
+            var cmd = new SqlCommand(@"
+        SELECT 
+            pc.Id,
+            pc.Quantity,
+            p.Id        AS SimpleProductId,
+            p.Name      AS SimpleProductName,
+            p.SalePrice AS SimpleProductSalePrice,
+            s.CostPrice AS SimpleProductCostPrice
+        FROM ProductComponents pc
+        INNER JOIN Products p      ON p.Id = pc.SimpleProductId
+        INNER JOIN SimpleProducts s ON s.Id = pc.SimpleProductId
+        WHERE pc.CompositeProductId = @CompositeProductId",
+                (SqlConnection)connection);
+
+            cmd.Parameters.AddWithValue("@CompositeProductId", compositeProductId);
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    components.Add(new ProductComponent
+                    {
+                        Id = (int)reader["Id"],
+                        Quantity = (int)reader["Quantity"],
+                        SimpleProduct = new SimpleProduct
+                        {
+                            Id = (int)reader["SimpleProductId"],
+                            Name = reader["SimpleProductName"].ToString(),
+                            SalePrice = (decimal)reader["SimpleProductSalePrice"],
+                            CostPrice = (decimal)reader["SimpleProductCostPrice"]
+                        }
+                    });
+                }
+            }
+            return components;
         }
     }
 }

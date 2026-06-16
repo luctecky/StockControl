@@ -27,16 +27,14 @@ namespace StockControl.Presentation.Forms
 
         private void mnuReqReport_Click(object sender, EventArgs e)
         {
-            // Coming in Phase 8
-            MessageBox.Show("Requisitions Report — Coming soon!",
-                "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var form = new ReportForm();
+            // Pre-select Requisitions Report
+            OpenForm(form);
         }
 
         private void mnuStockReport_Click(object sender, EventArgs e)
         {
-            // Coming in Phase 8
-            MessageBox.Show("Stock Output Report — Coming soon!",
-                "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            OpenForm(new ReportForm());
         }
 
         // Opens a form as a dialog, keeping MainForm as the parent
